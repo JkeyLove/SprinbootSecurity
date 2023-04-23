@@ -46,8 +46,8 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
         }
 
         //从redis中获取用户信息
-        String redisKey = "login:"+userid;
         //之前存入redis的是LoginUser类型,所以取出来也是LoginUser类型
+        String redisKey = "login:"+userid;
         LoginUser loginUser = redisCache.getCacheObject(redisKey);
 
         //如果在redis中查不到userid对应的用户(可能是缓存清空,或者超时过期了)
