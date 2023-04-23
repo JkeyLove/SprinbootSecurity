@@ -32,7 +32,7 @@ public class LoginServiceImpl implements LoginService {
         //会调用UserDetailsServiceImpl的loadUserByUsername方法进行用户校验,然后把User封装成UserDetails返回
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
 
-        //如果认证没有通过,给出对应的提示
+        //如果认证没有通过,给出对应的提示(在UserDetailsService已经给出提示了?)
         if (Objects.isNull(authenticate)){
             throw new RuntimeException("登录失败");
         }
