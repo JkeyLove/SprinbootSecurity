@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -29,7 +30,7 @@ public class LoginServiceImpl implements LoginService {
     public ResponseResult login(User user) {
         //AuthenticationManager  authenticate进行用户认证
         UsernamePasswordAuthenticationToken authenticationToken =  new UsernamePasswordAuthenticationToken(user.getUserName(),user.getPassword());
-        //会调用UserDetailsServiceImpl的loadUserByUsername方法进行用户校验,然后把User封装成UserDetails返回
+        //会调用UserDetailsServiceImpl的loadUserByUsername方法进行用户校验,然后把User封装成UserDetails(也就是LoginUser)返回
         Authentication authenticate = authenticationManager.authenticate(authenticationToken);
 
         //如果认证没有通过,给出对应的提示(在UserDetailsService已经给出提示了?)
@@ -48,8 +49,16 @@ public class LoginServiceImpl implements LoginService {
         return new ResponseResult<>(200,"登录成功",map);
     }
 
-
-
+    @Override
+    public ResponseResult logout() {
+        //获取SecurityContextHolder中的用户id
+        UsernamePasswordAuthenticationToken authentication = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication();
+        LoginUser loginUser = (LoginUser) authentication.getPrincipal();
+        Long userid = loginUser.getUser().getId();
+        //删除redis中的值
+        redisCache.deleteObject("login:"+userid);
+        return new ResponseResult<>(200,"登出成功");
+    }
 
 
 }
