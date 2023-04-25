@@ -3,6 +3,7 @@ package com.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.domain.LoginUser;
 import com.domain.User;
+import com.mapper.MenuMapper;
 import com.mapper.UserMapper;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -21,6 +22,9 @@ public class UserDetailsServiceImpl implements UserDetailsService{
     @Resource
     private UserMapper userMapper;
 
+    @Resource
+    private MenuMapper menuMapper;
+
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -36,8 +40,8 @@ public class UserDetailsServiceImpl implements UserDetailsService{
 
 
         //TODO 查询对应的权限信息
-        List<String> list = new ArrayList<>(Arrays.asList("test","admin"));
-
+        /*List<String> list = new ArrayList<>(Arrays.asList("test","admin"));*/
+        List<String> list = menuMapper.selectPermsByUserId(1L);
         //把数据封装成UserDetails返回
         return new LoginUser(user,list);
     }
