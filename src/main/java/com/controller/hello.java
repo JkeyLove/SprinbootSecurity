@@ -13,4 +13,9 @@ public class hello {
         return "hello";
     }
 
+    //使用的是基于配置的权限校验
+    @RequestMapping("/happy")
+    public String sayHappy(){
+        return "happy";
+    }
 }
