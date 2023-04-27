@@ -22,7 +22,6 @@ public class LoginUser implements UserDetails {
     private List<String> permissions;   //存储权限信息
 
 
-
     public LoginUser(User user, List<String> permissions) {
         this.user = user;
         this.permissions = permissions;
@@ -31,7 +30,7 @@ public class LoginUser implements UserDetails {
     @JSONField(serialize = false)   //存储SpringSecurity所需的权限信息集合,并且不将此成员变量序列化到redis中(上面有permissions,而且运行时序列话此成员变量会报错)
     private List<GrantedAuthority> authorities;
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {        //将查询到的权限信息返回
+    public Collection<? extends GrantedAuthority> getAuthorities() {        //将查询到的权限信息返回(使用的是自带的查询权限方法)
         if (authorities!=null){ //如果authorities已经有信息(加快速度)
             return authorities;
         }

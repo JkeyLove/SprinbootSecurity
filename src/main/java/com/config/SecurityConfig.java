@@ -1,21 +1,15 @@
 package com.config;
 
 import com.filter.JwtAuthenticationTokenFilter;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
-import org.springframework.security.config.annotation.authentication.configuration.EnableGlobalAuthentication;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
-import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
@@ -24,13 +18,15 @@ import javax.annotation.Resource;
 @Configuration
 @EnableGlobalMethodSecurity(prePostEnabled = true)  //开启权限验证的注解功能
 public class SecurityConfig extends WebSecurityConfigurerAdapter{
+
+    /*注入以下两个SpringSecurity拦截器到容器*/
     @Resource
     private AuthenticationEntryPoint authenticationEntryPoint;
 
     @Resource
     private AccessDeniedHandler accessDeniedHandler;
 
-    //创建BCryptPasswordEncoder注入容器
+    //创建BCryptPasswordEncoder注入容器(用于对密码加密)
     @Bean
     public BCryptPasswordEncoder passwordEncoder(){
         return new BCryptPasswordEncoder();
@@ -61,6 +57,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter{
                 //认证失败处理器
                 .authenticationEntryPoint(authenticationEntryPoint)
                 .accessDeniedHandler(accessDeniedHandler);
+
+        //允许跨域
+        http.cors();
+
     }
 
     @Bean

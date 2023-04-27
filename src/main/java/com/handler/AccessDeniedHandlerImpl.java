@@ -13,6 +13,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+/*
+ *   SpringSecurity的权限鉴定拦截器要实现AccessDeniedHandler接口
+ * */
 @Component
 public class AccessDeniedHandlerImpl implements AccessDeniedHandler {
     @Override

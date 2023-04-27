@@ -12,7 +12,9 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-
+/*
+*   SpringSecurity的认证拦截器要实现AuthenticationEntryPoint接口
+* */
 @Component
 public class AuthenticationEntryPointImpl implements AuthenticationEntryPoint {
     @Override
